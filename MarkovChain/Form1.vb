@@ -1,5 +1,7 @@
 ﻿Public Class Form1
 
+    Dim r As New Random
+
     Public sequence As New Dictionary(Of String, List(Of String))
     Dim sampleSize As Integer
 
@@ -63,7 +65,7 @@
 
         Dim wordList As List(Of String) = txtRefText.Text.Split(" ").Distinct.ToList
 
-        Dim search As String = wordList(Rnd() * (wordList.Count - 1))
+        Dim search As String = wordList(r.NextDouble * (wordList.Count - 1))
 
         Do While search.Length < sampleSize OrElse search.First = Char.ToLower(search.First)
             search = wordList(Rnd() * (wordList.Count - 1))
@@ -71,15 +73,16 @@
         search = search.Substring(0, sampleSize)
 
 
+
         Dim result As String = search
 
         For i As Integer = 0 To maxChars - 1
 
-            If Not sequence.ContainsKey(search) Then Continue For
+            If Not sequence.ContainsKey(search) Then Exit For
 
             Dim sList As List(Of String) = sequence.Item(search)
 
-            result &= sList.Item(Rnd() * (sList.Count - 1))
+            result &= sList.Item(r.NextDouble * (sList.Count - 1))
 
             search = result.Substring(result.Length - sampleSize, sampleSize)
 
